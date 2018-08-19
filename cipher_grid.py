@@ -17,15 +17,6 @@ import string_processing
 		encode() : encode a string using the grid
 		decode() : decode a string using the grid
 		__str__() : format the class variable grid for printing
-
-	notes:
-		todo:
-			- coordinates() in string_matrix return iterator
-			- add checking for values not set
-			- consider alternate types for unset values
-		ideas:
-			- support labels class variable for alternative 
-				row/column labeling (like ADFGVX)
 '''
 
 class CipherGrid(string_matrix.StringMatrix, ABC):

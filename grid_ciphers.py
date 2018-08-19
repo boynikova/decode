@@ -11,14 +11,6 @@ import string_processing
 		- Bifid
 		- Playfair
 		- Nihilist
-
-	notes
-		todo:
-			all classes:
-				- check input types and sizes
-				- check empty return values
-			Nihilist:
-				- support empty key
 '''
 
 class PolybiusGrid(cipher_grid.CipherGrid):
