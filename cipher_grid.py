@@ -97,13 +97,19 @@ class CipherGrid(string_matrix.StringMatrix, ABC):
 	def ciphertext_to_parts(self, s):
 		pass
 
-	@abstractmethod
 	def encode_part(self, p, **kwargs):
-		pass
+		res = ''
+		coords = self.coordinates(p)
+		if coords:
+			res = self.coords_to_part(coords, **kwargs)
+		return res
 
-	@abstractmethod
 	def decode_part(self, p, **kwargs):
-		pass
+		res = ''
+		coords = self.part_to_coords(p, **kwargs)
+		if coords:
+			res = self.locate(coords)
+		return res
 
 	@abstractmethod
 	def coords_to_part(self, coords, **kwargs):

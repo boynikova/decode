@@ -33,20 +33,6 @@ class PolybiusGrid(cipher_grid.CipherGrid):
 	def ciphertext_to_parts(self, s):
 		return string_processing.group_digits(s, 2)
 
-	def encode_part(self, p, **kwargs):
-		res = ''
-		coords = self.coordinates(p)
-		if coords:
-			res = self.coords_to_part(coords, **kwargs)
-		return res
-
-	def decode_part(self, p, **kwargs):
-		res = ''
-		coords = self.part_to_coords(p, **kwargs)
-		if coords:
-			res = self.locate(coords)
-		return res
-
 	def coords_to_part(self, coords, **kwargs):
 		return '{}{}'.format(*coords)
 
