@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from copy import deepcopy
 
 import string_matrix
 import string_processing
@@ -8,8 +7,6 @@ import string_processing
 	CipherGrid class
 
 	functions:
-		update() : update alphabet stored in the grid, 
-			optionally update grid_key and translation_table
 		locate() : locate a character in the grid 
 			at the given coordinates
 		coordinates() : coordinates of a character in the grid 
@@ -23,44 +20,24 @@ class CipherGrid(string_matrix.StringMatrix, ABC):
 	alphabet = ''
 	grid_key = ''
 	translation_table = {}
-	grid = []
 
 	def __init__(self, alphabet, dimensions, 
 				grid_key = None, replace_table = None, base_index = 0):
-		super().__init__('', dimensions, base_index = base_index)
-		self.update(alphabet, grid_key, replace_table)
-
-	def update(self, alphabet, grid_key = None, replace_table = None):
-		self.__set_grid_key(grid_key)
-		self. __set_translation_table(replace_table)
-		self.__set_alphabet(alphabet)
-		super().update(self.alphabet)
-		self.grid = deepcopy(self.matrix)
-
-	def __set_grid_key(self, grid_key):
-		res = self.grid_key
+		s = alphabet
+		self.grid_key = grid_key
 		if grid_key is not None:
-			res = grid_key
-		self.grid_key = res
-
-	def __set_translation_table(self, replace_table):
-		res = self.translation_table
+			s = grid_key + s
 		if replace_table is not None:
-			res = {
+			translation_table = {
 				k: v for k, v in replace_table.items() if v
 			}
-		self.translation_table = res
-
-	def __set_alphabet(self, alphabet):
-		res = self.alphabet
-		if alphabet:
-			s = alphabet
-			s = self.grid_key + s
-			remove = list(self.translation_table.keys())
+			self.translation_table = translation_table
+			remove = list(translation_table.keys())
 			s = string_processing.remove(s, remove)
-			s = string_processing.unique(s)
-			res = s
-		self.alphabet = res
+		s = string_processing.unique(s)
+		super().__init__(s, dimensions, base_index = base_index)
+		if self.s is not None:
+			self.alphabet = self.s
 
 	def locate(self, p):
 		res = super().locate(p)
@@ -142,12 +119,4 @@ class CipherGrid(string_matrix.StringMatrix, ABC):
 
 	@abstractmethod
 	def decoded_parts_to_string(self, parts):
-		pass
-
-	def __str__(self):
-		if self.grid:
-			return '\n'.join(str(row) for row in self.grid)
-		elif self.grid == []:
-			return str([])
-		else:
-			return str(None)		
+		pass		

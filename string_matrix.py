@@ -6,7 +6,6 @@ import string_processing
 	characters stored in a two-dimensional list
 
 	functions:
-		update() : update the string stored in the matrix
 		locate() : find character in the matrix given coordinates
 		coordinates() : get matrix coordinates for the given character
 		transpose_columns() : switch columns of the matrix
@@ -18,7 +17,7 @@ class StringMatrix():
 	"""
 		properties
 			s : string
-				the string represented by the matrix
+				the string stored in the matrix
 			dimensions : tuple of int
 				dimensions of the matrix
 			base_index : int
@@ -42,12 +41,10 @@ class StringMatrix():
 				padding : string
 		"""
 		self.base_index = base_index
-		self.dimensions = dimensions
-		self.update(s, padding)
-		
-	def update(self, s, padding = None):
-		matrix = string_matrix(s, self.dimensions, padding = padding)
-		self.matrix = matrix
+		matrix = string_matrix(s, dimensions, padding = padding)
+		if matrix:
+			self.dimensions = dimensions
+			self.matrix = matrix
 		if matrix is None:
 			self.s = None
 		else:
@@ -171,12 +168,8 @@ def string_matrix(s, dimensions, padding = None):
 		if only one of the dimensions (r, c) are positive, 
 		the resulting matrix will have r rows or c columns 
 
-		if dimensions multiply to a value less than the length of 
-		the string, the string will be trimmed to the necessary length
-		
-		if dimensions multiply to a value greater than the length of 
-		the string and a string is provided to use as padding, 
-		the string will be padded to the necessary length 
+		if necessary, s will be trimmed to fit the given dimensions 
+		or padded to length, if padding string is provided 
 
 		arguments
 			s : string
