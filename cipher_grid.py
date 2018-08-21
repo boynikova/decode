@@ -13,7 +13,6 @@ import string_processing
 			with translation
 		encode() : encode a string using the grid
 		decode() : decode a string using the grid
-		__str__() : format the class variable grid for printing
 '''
 
 class CipherGrid(string_matrix.StringMatrix, ABC):

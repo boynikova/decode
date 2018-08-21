@@ -1,6 +1,5 @@
 .gitignore
 notes
 __pycache__
-transposition_ciphers.py
 ciphers.py
 symbolic_alphabets.py
