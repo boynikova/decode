@@ -145,6 +145,9 @@ class NihilistGrid(PolybiusGrid):
 		return super().part_to_coords(str(pi), **kwargs)
 
 	def key_digit(self, index):
-		i = index % len(self.keyword)
-		c = self.coordinates(self.keyword[i])
-		return int('{}{}'.format(*c))
+		res = 0
+		if self.keyword:
+			i = index % len(self.keyword)
+			c = self.coordinates(self.keyword[i])
+			res = int('{}{}'.format(*c))
+		return res
