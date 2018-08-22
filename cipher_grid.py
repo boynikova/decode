@@ -122,3 +122,12 @@ class CipherGrid(string_matrix.StringMatrix, ABC):
 
 	def decoded_parts_to_string(self, parts):
 		return ''.join(parts)	
+
+	@staticmethod
+	def replacements_dict(remove, translate):
+		replacements = None
+		if remove:
+			replacements = {remove : ''}
+		elif translate:
+			replacements = dict(zip(*translate)) 	
+		return replacements	

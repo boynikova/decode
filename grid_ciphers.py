@@ -16,16 +16,10 @@ import string_processing
 class PolybiusGrid(cipher_grid.CipherGrid):
 
 	def __init__(self, grid_key = None, base_index = 1, **kwargs):
-		remove = kwargs.pop('remove', None)
-		translate = kwargs.pop('translate', None)
-		replacements = None
-		if remove:
-			replacements = {remove.lower() : ''}
-		elif translate:
-			replacements = dict(zip(*translate.lower())) 
-		else:
-			replacements = {'c' : 'k'}
-		kwargs['replacements'] = replacements
+		kwargs['replacements'] = cipher_grid.CipherGrid.replacements_dict(
+			kwargs.pop('remove', '').lower(), 
+			kwargs.pop('translate', '').lower()
+		) or {'c': 'k'}
 		if grid_key:
 			grid_key = string_processing.alpha(grid_key).lower()
 		super().__init__(

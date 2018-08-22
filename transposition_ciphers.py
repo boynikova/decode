@@ -19,10 +19,10 @@ class ADFGVXGrid(cipher_grid.CipherGrid):
 	padding = 'x'
 	transposition_key = None
 
-	def __init__(self, transposition_key, grid_key = None):
+	def __init__(self, transposition_key, grid_key = None, **kwargs):
 		self.transposition_key = string_processing.unique(transposition_key)
 		super().__init__(
-			self.alphabet, self.dimensions, grid_key = grid_key
+			self.alphabet, self.dimensions, grid_key = grid_key, **kwargs
 		) 
 		
 	def encode(self, s, **kwargs): 
@@ -87,5 +87,9 @@ class ADFGXGrid(ADFGVXGrid):
 	dimensions = (5, 5)
 	labels = list('adfgx')
 
-	def __init__(self, transposition_key, grid_key = None):
-		super().__init__(transposition_key, grid_key = grid_key) 
+	def __init__(self, transposition_key, grid_key = None, **kwargs):
+		kwargs['replacements'] = cipher_grid.CipherGrid.replacements_dict(
+			kwargs.pop('remove', '').lower(), 
+			kwargs.pop('translate', '').lower()
+		) or {'i': 'j'}
+		super().__init__(transposition_key, grid_key = grid_key, **kwargs) 
