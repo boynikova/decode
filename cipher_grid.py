@@ -21,18 +21,17 @@ class CipherGrid(string_matrix.StringMatrix, ABC):
 	translation_table = {}
 
 	def __init__(self, alphabet, dimensions, 
-				grid_key = None, replace_table = None, base_index = 0):
+			grid_key = None, base_index = 0, **kwargs):
 		s = alphabet
 		self.grid_key = grid_key
 		if grid_key is not None:
 			s = grid_key + s
-		if replace_table is not None:
-			translation_table = {
-				k: v for k, v in replace_table.items() if v
-			}
-			self.translation_table = translation_table
-			remove = list(translation_table.keys())
-			s = string_processing.remove(s, remove)
+		replacements = kwargs.pop('replacements', {})
+		self.translation_table = {
+			k: v for k, v in replacements.items() if v
+		}
+		remove = list(replacements.keys())
+		s = string_processing.remove(s, remove)
 		s = string_processing.unique(s)
 		super().__init__(s, dimensions, base_index = base_index)
 		if self.s is not None:
@@ -118,10 +117,8 @@ class CipherGrid(string_matrix.StringMatrix, ABC):
 	def part_to_coords(self, p, **kwargs):
 		pass
 
-	@abstractmethod
 	def encoded_parts_to_string(self, parts):
-		pass
+		return ''.join(parts)
 
-	@abstractmethod
 	def decoded_parts_to_string(self, parts):
-		pass		
+		return ''.join(parts)	

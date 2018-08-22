@@ -57,12 +57,6 @@ class ADFGVXGrid(cipher_grid.CipherGrid):
 	def part_to_coords(self, p, **kwargs):
 		return tuple(map(self.labels.index, p))
 
-	def encoded_parts_to_string(self, parts):
-		return ''.join(parts)
-
-	def decoded_parts_to_string(self, parts):
-		return ''.join(parts)
-
 	def decoded_padding(self):
 		padding = self.padding
 		return self.locate(self.part_to_coords(padding + padding))

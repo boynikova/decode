@@ -15,16 +15,21 @@ import string_processing
 
 class PolybiusGrid(cipher_grid.CipherGrid):
 
-	def __init__(self, translate = 'ck', grid_key = None, base_index = 1):
-		if translate:
-			if not translate.islower():
-				translate = translate.lower()
-		replace_table = dict(zip(*translate))
+	def __init__(self, grid_key = None, base_index = 1, **kwargs):
+		remove = kwargs.pop('remove', None)
+		translate = kwargs.pop('translate', None)
+		replacements = None
+		if remove:
+			replacements = {remove.lower() : ''}
+		elif translate:
+			replacements = dict(zip(*translate.lower())) 
+		else:
+			replacements = {'c' : 'k'}
+		kwargs['replacements'] = replacements
 		if grid_key:
 			grid_key = string_processing.alpha(grid_key).lower()
 		super().__init__(
-			ascii_lowercase, (5, 5), grid_key = grid_key, 
-			replace_table = replace_table, base_index = base_index
+			ascii_lowercase, (5, 5), grid_key, base_index, **kwargs
 		)
 
 	def plaintext_to_parts(self, s):
@@ -39,16 +44,10 @@ class PolybiusGrid(cipher_grid.CipherGrid):
 	def part_to_coords(self, p, **kwargs):
 		return tuple(map(int, p))
 
-	def encoded_parts_to_string(self, parts):
-		return ''.join(parts)
-
-	def decoded_parts_to_string(self, parts):
-		return ''.join(parts)
-
 class BifidGrid(PolybiusGrid):
 
-	def __init__(self, translate = 'ck', grid_key = None):
-		super().__init__(translate, grid_key)
+	def __init__(self, grid_key = None, **kwargs):
+		super().__init__(grid_key, **kwargs)
 
 	def encode(self, s, **kwargs):
 		s = super().encode(s)
@@ -71,8 +70,8 @@ class BifidGrid(PolybiusGrid):
 class PlayfairGrid(PolybiusGrid):
 	padding = 'x'
 
-	def __init__(self, translate = 'ck', grid_key = None):
-		super().__init__(translate, grid_key, base_index = 0)
+	def __init__(self, grid_key = None, **kwargs):
+		super().__init__(grid_key, base_index = 0, **kwargs)
 
 	def coordinates(self, p):
 		p1, p2 = p
@@ -131,9 +130,9 @@ class PlayfairGrid(PolybiusGrid):
 class NihilistGrid(PolybiusGrid):
 	keyword = None
 
-	def __init__(self, keyword, translate = 'ck', grid_key = None):
+	def __init__(self, keyword, grid_key = None, **kwargs):
 		self.keyword = keyword
-		super().__init__(translate, grid_key)
+		super().__init__(grid_key, **kwargs)
 
 	def coords_to_part(self, coords, **kwargs):
 		pi = int(super().coords_to_part(coords, **kwargs))
