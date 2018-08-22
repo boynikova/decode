@@ -1,4 +1,4 @@
-from string import ascii_lowercase
+from string import ascii_lowercase, digits
 
 import cipher_grid
 import transposition_ciphers
@@ -165,21 +165,17 @@ class ADFGVXGrid(cipher_grid.CipherGrid):
 	def encode(self, s, **kwargs): 
 		l = len(self.transposition_key)
 		s = super().encode(s, **kwargs)
-		cipher_grid = self.ADFGVXCipher(
+		cipher = transposition_ciphers.ADFGVXCipher(
 			'encode', s, (-1, l), self.transposition_key
 		)
-		cipher_grid.transpose_columns()
-		cipher_grid.transpose()
-		return cipher_grid.s
+		return cipher.get_s()
 
 	def decode(self, s, **kwargs):
 		l = len(self.transposition_key)
-		cipher_grid = self.ADFGVXCipher(
+		cipher = transposition_ciphers.ADFGVXCipher(
 			'decode', s, (-1, len(s) // l), self.transposition_key
 		)
-		cipher_grid.transpose()
-		cipher_grid.transpose_columns(**kwargs)
-		s = cipher_grid.s
+		s = cipher.get_s()
 		return super().decode(s).strip(self.decoded_padding())
 
 	def plaintext_to_parts(self, s):
@@ -197,25 +193,6 @@ class ADFGVXGrid(cipher_grid.CipherGrid):
 	def decoded_padding(self):
 		padding = self.padding
 		return self.locate(self.part_to_coords(padding + padding))
-
-	class ADFGVXCipher(transposition_ciphers.TranspositionCipher):
-		transposition_key = None
-		padding = 'x'
-
-		def __init__(self, mode, s, dimensions, transposition_key):
-			self.transposition_key = transposition_key
-			super().__init__(mode, s, dimensions)
-
-		def transpose_columns(self):
-			o = self.permutation_order()
-			super().transpose_columns(o)
-	
-		def permutation_order(self):
-			l = len(self.transposition_key)
-			res = sorted(range(l), key = lambda i: self.transposition_key[i])
-			if self.mode == 'decode':
-				res = [res.index(i) for i in range(l)]
-			return res
 
 class ADFGXGrid(ADFGVXGrid):
 	alphabet = ascii_lowercase

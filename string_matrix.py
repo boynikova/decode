@@ -188,33 +188,37 @@ def string_matrix(s, dimensions, padding = None):
 					and no padding is specified
 	"""
 	res = None
-	r, c = dimensions
-	if r == 0:
-		if c == 0:
-			res = []
-	if s:
-		l = len(s)
-		if c > 0:
-			if r > 0:
-				s = string_processing.pad_to_length(
-					s, r * c, padding = padding
-				)
-		elif r > 0:			
-			d, m = divmod(l, r)
-			if m != 0:
-				d += 1
-				m = 0
-			s = string_processing.pad_to_length(
-				s, r * d, padding = padding
-			)
-			c = len(s) // r
-		spl = string_processing.split_n_padding(
-				s, c, padding = padding
-			)
-		if spl:
-			res = list(map(list, spl))
+	try:
+		r, c = dimensions
+	except:
+		pass
 	else:
-		res = []
+		if r == 0:
+			if c == 0:
+				res = []
+		if s:
+			l = len(s)
+			if c > 0:
+				if r > 0:
+					s = string_processing.pad_to_length(
+						s, r * c, padding = padding
+					)
+			elif r > 0:			
+				d, m = divmod(l, r)
+				if m != 0:
+					d += 1
+					m = 0
+				s = string_processing.pad_to_length(
+					s, r * d, padding = padding
+				)
+				c = len(s) // r
+			spl = string_processing.split_n_padding(
+					s, c, padding = padding
+				)
+			if spl:
+				res = list(map(list, spl))
+		else:
+			res = []
 	return res
 
 def matrix_to_string(m):
