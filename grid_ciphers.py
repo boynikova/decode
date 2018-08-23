@@ -165,14 +165,14 @@ class ADFGVXGrid(cipher_grid.CipherGrid):
 	def encode(self, s, **kwargs): 
 		l = len(self.transposition_key)
 		s = super().encode(s, **kwargs)
-		cipher = transposition_ciphers.ADFGVXCipher(
+		cipher = transposition_ciphers.TranspositionCipher(
 			'encode', s, (-1, l), self.transposition_key
 		)
 		return cipher.get_s()
 
 	def decode(self, s, **kwargs):
 		l = len(self.transposition_key)
-		cipher = transposition_ciphers.ADFGVXCipher(
+		cipher = transposition_ciphers.TranspositionCipher(
 			'decode', s, (-1, len(s) // l), self.transposition_key
 		)
 		s = cipher.get_s()

@@ -256,7 +256,7 @@ def transpose_columns(m, order):
 				if the list is empty
 			None
 				if any column index is out of range
-				if an column is not listed in o
+				if any column is not listed in o
 	"""
 	res = None
 	t = transpose(m)
